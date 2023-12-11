@@ -26,6 +26,25 @@ def add_user(user_ID, password):
         print('UserID Already Taken')
         return False
 
+
+
+def authenticate(user, password):
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Users WHERE user_ID=?", (user,))
+        found_user = cursor.fetchone()
+
+        print("User Entered:", user, "Password Entered:", password)
+        print("User Found:", found_user)
+
+        if found_user and found_user[1] == password:  # Check if user and password match
+            return True
+        else:
+            return False
+    except sqlite3.Error as e:
+        print("Error authenticating user:", e)
+        return False
+
     
 #INPUT THE USER ID AND PASSWORD
 #Test add_user function
@@ -34,4 +53,7 @@ user_input_id = input('Please Type a userID: ')
 user_input_password = input('Please Type a password: ')
 add_user(user_input_id, user_input_password)
 print('')
+
+
+
 
